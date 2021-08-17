@@ -7,63 +7,63 @@ endif()
 
 if(WASMEDGE_BUILD_SHARED_LIB)
 
-wasmedge_add_library(wasmedge_c SHARED
-  wasmedge.cpp
-  ${CMAKE_CURRENT_BINARY_DIR}/../../include/api/wasmedge.h
-)
+  wasmedge_add_library(wasmedge_c SHARED
+    wasmedge.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/../../include/api/wasmedge.h
+  )
 
-set_target_properties(wasmedge_c PROPERTIES
-  PUBLIC_HEADER ${CMAKE_CURRENT_BINARY_DIR}/../../include/api/wasmedge.h
-  MSVC_RUNTIME_LIBRARY "MultiThreadedDLL"
-)
+  set_target_properties(wasmedge_c PROPERTIES
+    PUBLIC_HEADER ${CMAKE_CURRENT_BINARY_DIR}/../../include/api/wasmedge.h
+    MSVC_RUNTIME_LIBRARY "MultiThreadedDLL"
+  )
 
-target_link_libraries(wasmedge_c
-  PUBLIC
-  wasmedgeVM
-)
-
-if (WASMEDGE_BUILD_AOT_RUNTIME)
   target_link_libraries(wasmedge_c
     PUBLIC
-    wasmedgeAOT
+    wasmedgeVM
   )
-endif()
 
-install(TARGETS wasmedge_c
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+  if (WASMEDGE_BUILD_AOT_RUNTIME)
+    target_link_libraries(wasmedge_c
+      PUBLIC
+      wasmedgeAOT
+    )
+  endif()
+
+  install(TARGETS wasmedge_c
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
 
 endif()
 
 if(WASMEDGE_BUILD_STATIC_LIB)
 
-wasmedge_add_library(wasmedge_c_static STATIC
-  wasmedge.cpp
-  ${CMAKE_CURRENT_BINARY_DIR}/../../include/api/wasmedge.h
-)
+  wasmedge_add_library(wasmedge_c_static STATIC
+    wasmedge.cpp
+    ${CMAKE_CURRENT_BINARY_DIR}/../../include/api/wasmedge.h
+  )
 
-set_target_properties(wasmedge_c_static PROPERTIES
-  PUBLIC_HEADER ${CMAKE_CURRENT_BINARY_DIR}/../../include/api/wasmedge.h
-)
+  set_target_properties(wasmedge_c_static PROPERTIES
+    PUBLIC_HEADER ${CMAKE_CURRENT_BINARY_DIR}/../../include/api/wasmedge.h
+  )
 
-target_link_libraries(wasmedge_c_static
-  PUBLIC
-  wasmedgeVM
-)
-
-if (WASMEDGE_BUILD_AOT_RUNTIME)
   target_link_libraries(wasmedge_c_static
     PUBLIC
-    wasmedgeAOT
+    wasmedgeVM
   )
-endif()
 
-set_target_properties(wasmedge_c_static PROPERTIES OUTPUT_NAME wasmedge_c)
+  if (WASMEDGE_BUILD_AOT_RUNTIME)
+    target_link_libraries(wasmedge_c_static
+      PUBLIC
+      wasmedgeAOT
+    )
+  endif()
 
-install(TARGETS wasmedge_c_static
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-)
+  set_target_properties(wasmedge_c_static PROPERTIES OUTPUT_NAME wasmedge_c)
+
+  install(TARGETS wasmedge_c_static
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  )
 
 endif()
